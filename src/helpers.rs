@@ -1,26 +1,26 @@
 use image::imageops::FilterType::{Lanczos3, Nearest};
-use image::imageops::{contrast, dither, BiLevel};
+// use image::imageops::{contrast, dither, BiLevel};
 use image::io::Reader as ImageReader;
-use rusty_tesseract::{Args, Image};
-use std::collections::HashMap;
+// use rusty_tesseract::{Args, Image};
+// use std::collections::HashMap;
 use std::fs::File;
 use std::io::Write;
 use uuid::Uuid;
 
 const UPLOAD_DIR: &str = "./tmp";
 
-fn default_ocr_args() -> Args {
-    Args {
-        lang: "pol+eng".to_owned(),
-        config_variables: HashMap::from([(
-            "tessedit_char_whitelist".into(),
-            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZęóąśłżźćń?,.! ".into(),
-        )]),
-        dpi: Some(150),
-        psm: Some(6),
-        oem: Some(3),
-    }
-}
+// fn default_ocr_args() -> Args {
+//     Args {
+//         lang: "pol+eng".to_owned(),
+//         config_variables: HashMap::from([(
+//             "tessedit_char_whitelist".into(),
+//             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZęóąśłżźćń?,.! ".into(),
+//         )]),
+//         dpi: Some(150),
+//         psm: Some(6),
+//         oem: Some(3),
+//     }
+// }
 
 pub fn write_file_sys(multipart_file_data: &Vec<u8>, ext: &str) -> String {
     let unique_id = Uuid::new_v4().to_string();
@@ -58,10 +58,10 @@ pub fn ocr_read_file_text(file_name: &str) -> String {
         .decode()
         .unwrap();
 
-    let img = Image::from_dynamic_image(&dynamic_image).unwrap();
+    // let img = Image::from_dynamic_image(&dynamic_image).unwrap();
 
-    let output = rusty_tesseract::image_to_string(&img, &default_ocr_args()).unwrap();
-    println!("The String output for {} is: {:?}", file_name, output);
+    // let output = rusty_tesseract::image_to_string(&img, &default_ocr_args()).unwrap();
+    println!("The String output for {} is: {:?}", file_name, "foo");
 
-    output
+    String::from("foo")
 }
