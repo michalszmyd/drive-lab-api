@@ -1,4 +1,5 @@
 use actix_cors::Cors;
+use tokio;
 use actix_web::middleware::Logger;
 use actix_web::{dev::Service as _, web, App};
 use actix_web::{http, HttpServer};
@@ -7,7 +8,8 @@ use futures_util::future::FutureExt;
 mod actions;
 mod helpers;
 
-#[actix_web::main]
+
+#[tokio::main]
 async fn main() -> std::io::Result<()> {
     env_logger::init_from_env(Env::default().default_filter_or("info"));
 
@@ -23,6 +25,8 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .wrap_fn(|req, srv| {
                 println!("Hi from start. You requested: {}", req.path());
+                // i want  to log request params and multipart data
+                
                 srv.call(req).map(|res| {
                     println!("Hi from response");
                     res

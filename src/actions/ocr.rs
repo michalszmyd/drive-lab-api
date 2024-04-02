@@ -56,11 +56,16 @@ pub async fn create(
 ) -> Result<impl Responder, UnprocessableEntityError> {
     println!("Started OCR POST");
 
-    let uploaded_file_path = write_file_sys(&payload.file.bytes, &payload.file.content_type);
+    let data = payload.file.bytes.clone();
+    let mut file = tokio::fs::File::create(format!("tmp/{}", "foo1.png")).await.unwrap();
 
-    let ocr_value = ocr_read_file_text(&uploaded_file_path);
+    tokio::io::copy(&mut &data[..], &mut file)
+        .await
+        .unwrap();
 
-    let result = OcrResponse { body: ocr_value };
+    // let ocr_value = ocr_read_file_text(&.path());
+
+    let result = OcrResponse { body: "foo".to_string() };
 
     Ok(web::Json(result))
 }

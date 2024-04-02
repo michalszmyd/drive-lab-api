@@ -22,7 +22,7 @@ const UPLOAD_DIR: &str = "./tmp";
 //     }
 // }
 
-pub fn write_file_sys(multipart_file_data: &Vec<u8>, ext: &str) -> String {
+pub async fn write_file_sys(multipart_file_data: &Vec<u8>, ext: &str) -> String {
     let unique_id = Uuid::new_v4().to_string();
     let resolved_ext = ext.split("/").last().unwrap_or("");
 
