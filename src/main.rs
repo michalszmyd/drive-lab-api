@@ -1,4 +1,4 @@
-use actions::ocr::{create, new};
+use actions::users;
 use axum::{
     routing::{get, post},
     Router,
@@ -6,6 +6,8 @@ use axum::{
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 pub mod actions;
+
+const BINDING_LISTEN_HOST: &str = "0.0.0.0:3004";
 
 #[tokio::main]
 async fn main() {
@@ -19,11 +21,13 @@ async fn main() {
         .init();
 
     let app = Router::new()
-        .route("/", get(|| async { "Hello, World!" }))
-        .route("/ocr", get(new))
-        .route("/ocr", post(create));
+        .route("/", get(|| async { "OK" }))
+        .route("/users", get(users::new))
+        .route("/users", post(users::create));
 
-    // run our app with hyper, listening globally on port 3000
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3004").await.unwrap();
+    let listener = tokio::net::TcpListener::bind(BINDING_LISTEN_HOST)
+        .await
+        .unwrap();
+
     axum::serve(listener, app).await.unwrap();
 }
