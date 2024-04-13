@@ -1,5 +1,8 @@
-use axum::{response::Html, Form};
+use axum::{extract::State, response::Html, Form};
 use serde::Deserialize;
+use sqlx::Executor;
+
+use crate::AppState;
 
 pub async fn new() -> Html<&'static str> {
     let template = r#"
@@ -22,6 +25,9 @@ pub struct Register {
     password_confirmation: String,
 }
 
-pub async fn create(Form(form): Form<Register>) -> Html<&'static str> {
+pub async fn create(
+    State(state): State<AppState>,
+    Form(form): Form<Register>,
+) -> Html<&'static str> {
     Html("User submitted")
 }
